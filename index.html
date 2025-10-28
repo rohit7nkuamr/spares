@@ -140,7 +140,7 @@
         <section id="solution" class="py-16 md:py-24 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Proposed AI Solution Architecture</h2>
-                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">The solution consists of two tightly integrated modules. Click the tabs below to explore the AI/ML techniques, input data, and expected outputs for each module.</p>
+                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">The solution consists of two tightly integrated modules. Click the tabs below to explore the specific AI/ML techniques, input data, and expected outputs for each module.</p>
                 
                 <div class="flex justify-center mb-6 space-x-2">
                     <button id="pdm-tab-btn" class="tab-btn active px-6 py-3 font-medium rounded-md transition-colors duration-200">Predictive Maintenance (PdM)</button>
@@ -154,28 +154,28 @@
                                 <tr>
                                     <th class="px-6 py-4 font-semibold">Component</th>
                                     <th class="px-6 py-4 font-semibold">AI/ML Technique</th>
-                                    <th class="px-6 py-4 font-semibold">Input Data</th>
-                                    <th class="px-6 py-4 font-semibold">Output</th>
+                                    <th class="px-6 py-4 font-semibold">Input Data (Key Parameters)</th>
+                                    <th class="px-6 py-4 font-semibold">Output (Intervention Triggers & KPIs)</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-stone-200">
                                 <tr>
-                                    <td class="px-6 py-4 font-medium">Failure Classification</td>
+                                    <td class="px-6 py-4 font-medium">Failure/KPI Correlation</td>
                                     <td class="px-6 py-4">XGBoost / Random Forest</td>
-                                    <td class="px-6 py-4">Historical logs, repair history, vintage, op hours, state</td>
+                                    <td class="px-6 py-4">Historical failures, **Specified Life, Demonstrated Performance, System/Sub-system data (h)**.</td>
                                     <td class="px-6 py-4">Probability of failure type (e.g., Engine) within next $N$ hours.</td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 font-medium">Real-Time Anomaly Detection</td>
                                     <td class="px-6 py-4">Isolation Forests / Autoencoders</td>
-                                    <td class="px-6 py-4">Real-time sensor data (vibration, temp, oil) from IoT devices</td>
-                                    <td class="px-6 py-4">Alert on deviation from 'healthy' baseline, indicating pre-failure.</td>
+                                    <td class="px-6 py-4">Real-time sensor data (vibration, temp, oil), **Format for future sensors (d)**.</td>
+                                    <td class="px-6 py-4">Alert on deviation from 'healthy' baseline.</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 font-medium">Time-to-Failure Estimation</td>
+                                    <td class="px-6 py-4 font-medium">Time-to-Failure & RUL</td>
                                     <td class="px-6 py-4">Survival Analysis (Cox Model)</td>
-                                    <td class="px-6 py-4">Usage metrics, environmental factors (terrain, altitude), maintenance cycles</td>
-                                    <td class="px-6 py-4">Remaining Useful Life (RUL) in operational hours or days.</td>
+                                    <td class="px-6 py-4">Usage metrics, **Terrain of exploitation, Prevalent Weather (temp, humidity, wind) (e)**.</td>
+                                    <td class="px-6 py-4">Remaining Useful Life (RUL) & **Trigger for assembly check/replacement (Terrain Specific) (e)**.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -197,14 +197,14 @@
                                 <tr>
                                     <td class="px-6 py-4 font-medium">Forecasting Model</td>
                                     <td class="px-6 py-4">LSTM / Prophet (Time Series)</td>
-                                    <td class="px-6 py-4">Historical consumption, lead times, predicted failures from PdM, op intensity</td>
-                                    <td class="px-6 py-4">Short-term (1-3 mo) & long-term (6-12 mo) demand forecast for spares.</td>
+                                    <td class="px-6 py-4">Predicted failures, **Pattern in breakdowns & spares utilized (f), System/Sub-system data (h)**.</td>
+                                    <td class="px-6 py-4">Short/Long-term demand forecast for spares **with periodicity (g)**.</td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 font-medium">Inventory Optimization</td>
                                     <td class="px-6 py-4">Linear Programming (PuLP)</td>
-                                    <td class="px-6 py-4">Demand forecast, cost, lead time, target service level (e.g., 95%)</td>
-                                    <td class="px-6 py-4">Optimal reorder points (ROP) & safety stock for each repair echelon.</td>
+                                    <td class="px-6 py-4">Demand forecast, cost, lead time, target service level (95%).</td>
+                                    <td class="px-6 py-4">Optimal Reorder Points (ROP) & safety stock **for each repair echelon (g)**.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -222,33 +222,33 @@
                 <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg border border-stone-200">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                         <div class="w-full md:w-1/3">
-                            <h4 class="text-lg font-semibold text-teal-800 mb-3 text-center md:text-left">1. Data Collection</h4>
+                            <h4 class="text-lg font-semibold text-teal-800 mb-3 text-center md:text-left">1. Data Collection (b, e)</h4>
                             <div class="space-y-3">
-                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Equipment Data (Vintage, Hours)</div>
-                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Maintenance History (Logs, Parts)</div>
-                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Sensor Data (Vibration, Temp)</div>
-                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Environmental Data (Terrain, GIS)</div>
+                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Key Parameters: Vintage, Mileage, Engine Hours, State (O/H)</div>
+                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Repair History: Last Repair/Overhaul data from workshops.</div>
+                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Environmental: Terrain of Exploitation, Weather Conditions.</div>
+                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Real-Time Sensor Data & Future Induction Format (d)</div>
                             </div>
                         </div>
                         
                         <div class="flex-shrink-0 text-5xl text-teal-700 text-center">→</div>
                         
                         <div class="w-full md:w-1/3">
-                            <h4 class="text-lg font-semibold text-teal-800 mb-3 text-center">2. AI Analysis</h4>
+                            <h4 class="text-lg font-semibold text-teal-800 mb-3 text-center">2. AI Analysis (a, l)</h4>
                             <div class="bg-teal-700 text-white p-6 rounded-lg text-center shadow-inner">
-                                <span class="text-2xl font-bold">Secure Integrated Database</span>
-                                <div class="text-teal-100 mt-2">Data is processed, analyzed, and modeled using PdM & SDF algorithms.</div>
+                                <span class="text-2xl font-bold">Secure Integrated Database (a)</span>
+                                <div class="text-teal-100 mt-2">Customized models for various vehicles (Lorry, AL Stallion, etc.) (l) are processed.</div>
                             </div>
                         </div>
 
                         <div class="flex-shrink-0 text-5xl text-teal-700 text-center">→</div>
 
                         <div class="w-full md:w-1/3">
-                            <h4 class="text-lg font-semibold text-teal-800 mb-3 text-center md:text-left">3. Key Deliverables</h4>
+                            <h4 class="text-lg font-semibold text-teal-800 mb-3 text-center md:text-left">3. Key Deliverables (j, k)</h4>
                             <div class="space-y-3">
-                                <div class="bg-blue-100 text-blue-800 p-3 rounded-md text-center text-sm font-medium">Prediction Dashboard (RUL, Alerts)</div>
-                                <div class="bg-green-100 text-green-800 p-3 rounded-md text-center text-sm font-medium">Inventory Dashboard (ROP, Stock)</div>
-                                <div class="bg-indigo-100 text-indigo-800 p-3 rounded-md text-center text-sm font-medium">Reporting & Insights (Reliability Scores)</div>
+                                <div class="bg-blue-100 text-blue-800 p-3 rounded-md text-center text-sm font-medium">Prediction Dashboard: RUL, Alerts, **Holistic View of Maintenance Status (j)**</div>
+                                <div class="bg-green-100 text-green-800 p-3 rounded-md text-center text-sm font-medium">Inventory Dashboard: ROP, Stock, **Spares Released/In Transit/Not Materialized (k)**</div>
+                                <div class="bg-indigo-100 text-indigo-800 p-3 rounded-md text-center text-sm font-medium">Reporting & Insights (Reliability Scores, KPIs)</div>
                             </div>
                         </div>
                     </div>
