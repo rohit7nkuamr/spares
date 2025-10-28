@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Predictive Maintenance & Spares Forecasting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 640px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link.active {
+            font-weight: 600;
+            color: #0d9488;
+            border-bottom-color: #0d9488;
+        }
+        .tab-btn.active {
+            background-color: #0d9488;
+            color: #ffffff;
+        }
+        .step-btn.active {
+            background-color: #0d9488;
+            color: #ffffff;
+            border-color: #0d9488;
+        }
+        .step-btn.active ~ .step-line,
+        .step-btn.active ~ .step-btn {
+            background-color: #e5e7eb;
+            border-color: #e5e7eb;
+            color: #6b7280;
+        }
+        .step-line {
+            height: 2px;
+            width: 100%;
+            background-color: #e5e7eb;
+        }
+        .step-btn.active:before {
+            content: '✓';
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans antialiased">
+    <!-- Chosen Palette: Warm Neutral (Stone) with Teal and Dark Slate -->
+    <!-- Application Structure Plan: The SPA uses a thematic, top-navigation structure ('Overview', 'Solution', 'Data', 'Roadmap', 'Stack') rather than mirroring the report. This allows users to explore the project based on their interest (e.g., jump straight to the 'Solution Architecture' or 'Roadmap'). Key interactions include tabs for the 'Solution' (PdM vs. SDF modules) and a stepper for the 'Roadmap' (Phases 1-3). This is more engaging and digestible than a linear document, facilitating user understanding and non-linear exploration. -->
+    <!-- Visualization & Content Choices: 1. Expected Impact: Report Info -> 20-30% uptime increase. Goal -> Inform. Viz -> Bar Chart (Chart.js) showing 'Current' vs 'Projected' uptime. Interaction -> Tooltip. Justification -> Clear quantitative comparison. 2. Solution Architecture: Report Info -> Two module tables. Goal -> Organize/Compare. Viz -> Interactive Tabs (HTML/JS). Interaction -> Click to toggle content. Justification -> Intuitive switch between complex related topics. 3. Data Flow: Report Info -> Data collection list. Goal -> Organize/Show Flow. Viz -> Flowchart diagram (HTML/Tailwind Flexbox). Interaction -> None. Justification -> Visualizes the data pipeline more clearly than text. 4. Roadmap: Report Info -> Phase 1/2/3 text. Goal -> Show Change. Viz -> Interactive Stepper (HTML/JS). Interaction -> Click to show phase details. Justification -> Breaks down the timeline into digestible, focused steps. 5. Tech Stack: Report Info -> Tech table. Goal -> Inform. Viz -> HTML Table + Unicode icons. Interaction -> None. Justification -> Clear, direct presentation. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm border-b border-stone-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <span class="text-xl font-bold text-teal-800">AI Project Dashboard</span>
+                </div>
+                <div class="hidden md:flex md:space-x-8">
+                    <a href="#overview" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="overview">Overview</a>
+                    <a href="#solution" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="solution">Solution Architecture</a>
+                    <a href="#data" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="data">Data & Deliverables</a>
+                    <a href="#roadmap" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="roadmap">Roadmap</a>
+                    <a href="#stack" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="stack">Tech Stack</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-teal-700 focus:outline-none">
+                        <span class="text-2xl">☰</span>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden pb-4 space-y-2">
+                <a href="#overview" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="overview">Overview</a>
+                <a href="#solution" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="solution">Solution Architecture</a>
+                <a href="#data" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="data">Data & Deliverables</a>
+                <a href="#roadmap" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="roadmap">Roadmap</a>
+                <a href="#stack" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="stack">Tech Stack</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="overview" class="py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-extrabold text-slate-900 sm:text-5xl">AI-Driven Predictive Maintenance & Spare Parts Forecasting Solution</h1>
+                    <p class="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">This project transforms the Indian Army’s equipment maintenance from a reactive to a proactive model, enhancing mission reliability in diverse terrains through AI.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                        <h2 class="text-2xl font-semibold text-teal-800 mb-3">The Core Problem</h2>
+                        <ul class="space-y-3 text-slate-700 list-disc list-inside">
+                            <li><strong class="font-medium">Prolonged Downtime:</strong> Equipment is non-operational while awaiting repair or spares.</li>
+                            <li><strong class="font-medium">Suboptimal Inventory:</strong> High dead stock of some items, critical shortages of others.</li>
+                            <li><strong class="font-medium">Mission Compromise:</strong> Unexpected breakdowns reduce reliability of core assets.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                        <h2 class="text-2xl font-semibold text-teal-800 mb-3">Strategic Importance</h2>
+                        <p class="text-slate-700">By predicting failures and optimizing the supply chain, this solution directly supports the "Atma Nirbhar Bharat" vision, fostering an indigenous, scalable defense AI solution to ensure peak operational readiness.</p>
+                    </div>
+                </div>
+
+                <h2 class="text-3xl font-bold text-center text-slate-900 mb-10">Expected Impact</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                        <h3 class="text-xl font-semibold text-center mb-4">Quantitative Gains</h3>
+                        <p class="text-slate-600 text-center mb-4">The primary goal is a 20-30% increase in equipment uptime and significant reductions in inventory costs. This chart shows the projected average improvement.</p>
+                        <div class="chart-container">
+                            <canvas id="impactChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                            <h3 class="text-xl font-semibold text-teal-800 mb-2">Logistics & Cost</h3>
+                            <p class="text-slate-700">Significant reduction in inventory holding costs and logistical overhead by minimizing dead stock.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                            <h3 class="text-xl font-semibold text-teal-800 mb-2">Decision Making</h3>
+                            <p class="text-slate-700">Provides AI-driven equipment ratings and forecasts of maintenance interventions during operations.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200 col-span-1 md:col-span-2">
+                            <h3 class="text-xl font-semibold text-teal-800 mb-2">Self-Reliance</h3>
+                            <p class="text-slate-700">Establishes indigenous capability in integrated defense AI-ML systems, supporting "Atma Nirbhar Bharat".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Proposed AI Solution Architecture</h2>
+                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">The solution consists of two tightly integrated modules. Click the tabs below to explore the AI/ML techniques, input data, and expected outputs for each module.</p>
+                
+                <div class="flex justify-center mb-6 space-x-2">
+                    <button id="pdm-tab-btn" class="tab-btn active px-6 py-3 font-medium rounded-md transition-colors duration-200">Predictive Maintenance (PdM)</button>
+                    <button id="sdf-tab-btn" class="tab-btn px-6 py-3 font-medium rounded-md text-slate-700 bg-stone-200 hover:bg-stone-300 transition-colors duration-200">Spares Demand Forecasting (SDF)</button>
+                </div>
+
+                <div id="pdm-content" class="tab-content">
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-stone-200">
+                        <table class="w-full min-w-max text-left text-slate-700">
+                            <thead class="bg-stone-100 text-sm text-slate-800 uppercase">
+                                <tr>
+                                    <th class="px-6 py-4 font-semibold">Component</th>
+                                    <th class="px-6 py-4 font-semibold">AI/ML Technique</th>
+                                    <th class="px-6 py-4 font-semibold">Input Data</th>
+                                    <th class="px-6 py-4 font-semibold">Output</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Failure Classification</td>
+                                    <td class="px-6 py-4">XGBoost / Random Forest</td>
+                                    <td class="px-6 py-4">Historical logs, repair history, vintage, op hours, state</td>
+                                    <td class="px-6 py-4">Probability of failure type (e.g., Engine) within next $N$ hours.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Real-Time Anomaly Detection</td>
+                                    <td class="px-6 py-4">Isolation Forests / Autoencoders</td>
+                                    <td class="px-6 py-4">Real-time sensor data (vibration, temp, oil) from IoT devices</td>
+                                    <td class="px-6 py-4">Alert on deviation from 'healthy' baseline, indicating pre-failure.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Time-to-Failure Estimation</td>
+                                    <td class="px-6 py-4">Survival Analysis (Cox Model)</td>
+                                    <td class="px-6 py-4">Usage metrics, environmental factors (terrain, altitude), maintenance cycles</td>
+                                    <td class="px-6 py-4">Remaining Useful Life (RUL) in operational hours or days.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="sdf-content" class="tab-content hidden">
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-stone-200">
+                        <table class="w-full min-w-max text-left text-slate-700">
+                            <thead class="bg-stone-100 text-sm text-slate-800 uppercase">
+                                <tr>
+                                    <th class="px-6 py-4 font-semibold">Component</th>
+                                    <th class="px-6 py-4 font-semibold">AI/ML Technique</th>
+                                    <th class="px-6 py-4 font-semibold">Input Data</th>
+                                    <th class="px-6 py-4 font-semibold">Output</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Forecasting Model</td>
+                                    <td class="px-6 py-4">LSTM / Prophet (Time Series)</td>
+                                    <td class="px-6 py-4">Historical consumption, lead times, predicted failures from PdM, op intensity</td>
+                                    <td class="px-6 py-4">Short-term (1-3 mo) & long-term (6-12 mo) demand forecast for spares.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Inventory Optimization</td>
+                                    <td class="px-6 py-4">Linear Programming (PuLP)</td>
+                                    <td class="px-6 py-4">Demand forecast, cost, lead time, target service level (e.g., 95%)</td>
+                                    <td class="px-6 py-4">Optimal reorder points (ROP) & safety stock for each repair echelon.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="data" class="py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Data & Deliverables</h2>
+                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">The system's success relies on integrating diverse data sources to produce actionable dashboards. This diagram illustrates the flow from data collection to final deliverables.</p>
+
+                <h3 class="text-2xl font-semibold text-center text-slate-900 mb-8">Data Flow & System Output</h3>
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg border border-stone-200">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div class="w-full md:w-1/3">
+                            <h4 class="text-lg font-semibold text-teal-800 mb-3 text-center md:text-left">1. Data Collection</h4>
+                            <div class="space-y-3">
+                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Equipment Data (Vintage, Hours)</div>
+                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Maintenance History (Logs, Parts)</div>
+                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Sensor Data (Vibration, Temp)</div>
+                                <div class="bg-stone-100 p-3 rounded-md text-center text-sm font-medium text-slate-700">Environmental Data (Terrain, GIS)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-shrink-0 text-5xl text-teal-700 text-center">→</div>
+                        
+                        <div class="w-full md:w-1/3">
+                            <h4 class="text-lg font-semibold text-teal-800 mb-3 text-center">2. AI Analysis</h4>
+                            <div class="bg-teal-700 text-white p-6 rounded-lg text-center shadow-inner">
+                                <span class="text-2xl font-bold">Secure Integrated Database</span>
+                                <div class="text-teal-100 mt-2">Data is processed, analyzed, and modeled using PdM & SDF algorithms.</div>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 text-5xl text-teal-700 text-center">→</div>
+
+                        <div class="w-full md:w-1/3">
+                            <h4 class="text-lg font-semibold text-teal-800 mb-3 text-center md:text-left">3. Key Deliverables</h4>
+                            <div class="space-y-3">
+                                <div class="bg-blue-100 text-blue-800 p-3 rounded-md text-center text-sm font-medium">Prediction Dashboard (RUL, Alerts)</div>
+                                <div class="bg-green-100 text-green-800 p-3 rounded-md text-center text-sm font-medium">Inventory Dashboard (ROP, Stock)</div>
+                                <div class="bg-indigo-100 text-indigo-800 p-3 rounded-md text-center text-sm font-medium">Reporting & Insights (Reliability Scores)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Implementation Roadmap</h2>
+                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">The project will be rolled out in three distinct phases. Click each phase to see its key objectives and deliverables.</p>
+
+                <div class="w-full max-w-3xl mx-auto">
+                    <div class="flex items-center justify-between mb-8">
+                        <button class="step-btn flex-1 text-center px-4 py-2 rounded-md border-2 border-stone-300 bg-stone-100 text-slate-600 font-medium" data-phase="1">Phase 1: PoC</button>
+                        <div class="step-line flex-grow mx-2"></div>
+                        <button class="step-btn flex-1 text-center px-4 py-2 rounded-md border-2 border-stone-300 bg-stone-100 text-slate-600 font-medium" data-phase="2">Phase 2: Pilot</button>
+                        <div class="step-line flex-grow mx-2"></div>
+                        <button class="step-btn flex-1 text-center px-4 py-2 rounded-md border-2 border-stone-300 bg-stone-100 text-slate-600 font-medium" data-phase="3">Phase 3: Scale</button>
+                    </div>
+
+                    <div class="relative">
+                        <div id="phase-1-content" class="phase-content bg-white p-6 rounded-lg shadow-lg border border-stone-200">
+                            <h3 class="text-2xl font-semibold text-teal-800 mb-3">Phase 1: Proof of Concept (3-6 Months)</h3>
+                            <ul class="space-y-2 text-slate-700 list-disc list-inside">
+                                <li><strong>Data Sourcing:</strong> Secure historical dataset for 1-2 high-priority equipment types.</li>
+                                <li><strong>Pilot Database:</strong> Build and ingest data into the secure database structure.</li>
+                                <li><strong>Model Training:</strong> Train and validate PdM (XGBoost) and SDF (ARIMA) models.</li>
+                                <li><strong>Validation:</strong> Achieve initial prediction accuracy target of >85%.</li>
+                                <li><strong>Deliverable:</strong> Working PoC with a static dashboard demonstrating historical prediction.</li>
+                            </ul>
+                        </div>
+                        <div id="phase-2-content" class="phase-content hidden bg-white p-6 rounded-lg shadow-lg border border-stone-200">
+                            <h3 class="text-2xl font-semibold text-teal-800 mb-3">Phase 2: Pilot Deployment (6-12 Months)</h3>
+                            <ul class="space-y-2 text-slate-700 list-disc list-inside">
+                                <li><strong>Real-Time Pipeline:</strong> Integrate secure pipeline for live sensor data from pilot equipment.</li>
+                                <li><strong>Anomaly Deployment:</strong> Deploy Isolation Forest models on edge/field devices.</li>
+                                <li><strong>System Testing:</strong> Conduct rigorous security and performance testing in simulated field conditions.</li>
+                                <li><strong>Feedback Loop:</strong> Collect user feedback from technicians and logistics staff for refinement.</li>
+                                <li><strong>Deliverable:</strong> Functional pilot system on a secure staging environment, handling real-time data.</li>
+                            </ul>
+                        </div>
+                        <div id="phase-3-content" class="phase-content hidden bg-white p-6 rounded-lg shadow-lg border border-stone-200">
+                            <h3 class="text-2xl font-semibold text-teal-800 mb-3">Phase 3: Scaling & Full Rollout (12+ Months)</h3>
+                            <ul class="space-y-2 text-slate-700 list-disc list-inside">
+                                <li><strong>Model Scaling:</strong> Expand data ingestion and training to cover all primary equipment fleets.</li>
+                                <li><strong>Supply Chain Integration:</strong> Establish secure API links to existing Army ERP/Logistics systems.</li>
+                                <li><strong>Training & Documentation:</strong> Develop comprehensive training materials and SOPs.</li>
+                                <li><strong>Final Acceptance:</strong> Achieve system stability, security certification, and demonstrated operational gains.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="stack" class="py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Technical Stack Suggestion</h2>
+                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">This solution will be built using a modern, robust, and scalable technology stack, prioritizing open-source tools and libraries with strong community support.</p>
+                <div class="max-w-4xl mx-auto overflow-x-auto rounded-lg shadow-md border border-stone-200">
+                    <table class="w-full min-w-max text-left text-slate-700">
+                        <thead class="bg-stone-100 text-sm text-slate-800 uppercase">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold">Category</th>
+                                <th class="px-6 py-4 font-semibold">Suggested Technology</th>
+                                <th class="px-6 py-4 font-semibold">Rationale</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-stone-200">
+                            <tr>
+                                <td class="px-6 py-4 font-medium"><span class="mr-2">🐍</span> Programming Language</td>
+                                <td class="px-6 py-4">Python</td>
+                                <td class="px-6 py-4">Rich ecosystem of ML libraries (Scikit-learn, TensorFlow, Pandas, PuLP).</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium"><span class="mr-2">⚙️</span> AI/ML Libraries</td>
+                                <td class="px-6 py-4">Scikit-learn, XGBoost, TensorFlow/Keras</td>
+                                <td class="px-6 py-4">Robust, production-ready libraries for classification, time-series, and neural networks.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium"><span class="mr-2">🗃️</span> Database</td>
+                                <td class="px-6 py-4">PostgreSQL + Apache Hadoop/Spark</td>
+                                <td class="px-6 py-4">PostgreSQL for relational data; Hadoop/Spark for scalable processing of Big Data.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium"><span class="mr-2">🖥️</span> Deployment/Front End</td>
+                                <td class="px-6 py-4">Flask/Django (Backend) + React/Angular (Frontend)</td>
+                                <td class="px-6 py-4">Secure, scalable web application framework for dashboard visualization.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium"><span class="mr-2">📡</span> Edge Computing</td>
+                                <td class="px-6 py-4">ONNX / TensorFlow Lite</td>
+                                <td class="px-6 py-4">Allows models to run efficiently on low-power, ruggedized field sensors.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 AI-Driven Maintenance Solution Proposal. For informational purposes only.</p>
+            <p class="text-sm text-slate-400 mt-1">Problem Statement 5, Indian Army VII Edition Compendium 2025</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartCtx = document.getElementById('impactChart').getContext('2d');
+            new Chart(chartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Current Uptime', 'Projected Uptime (Avg. 25% Gain)'],
+                    datasets: [{
+                        label: 'Relative Equipment Uptime',
+                        data: [100, 125],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.6)',
+                            'rgba(13, 148, 136, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(13, 148, 136, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + '% (Relative)';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 140,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const pdmTabBtn = document.getElementById('pdm-tab-btn');
+            const sdfTabBtn = document.getElementById('sdf-tab-btn');
+            const pdmContent = document.getElementById('pdm-content');
+            const sdfContent = document.getElementById('sdf-content');
+
+            function showTab(tabName) {
+                if (tabName === 'pdm') {
+                    pdmContent.classList.remove('hidden');
+                    sdfContent.classList.add('hidden');
+                    pdmTabBtn.classList.add('active');
+                    sdfTabBtn.classList.remove('active');
+                    sdfTabBtn.classList.add('bg-stone-200', 'text-slate-700', 'hover:bg-stone-300');
+                } else {
+                    sdfContent.classList.remove('hidden');
+                    pdmContent.classList.add('hidden');
+                    sdfTabBtn.classList.add('active');
+                    pdmTabBtn.classList.remove('active');
+                    pdmTabBtn.classList.add('bg-stone-200', 'text-slate-700', 'hover:bg-stone-300');
+                }
+            }
+
+            pdmTabBtn.addEventListener('click', () => showTab('pdm'));
+            sdfTabBtn.addEventListener('click', () => showTab('sdf'));
+
+            const phaseBtns = document.querySelectorAll('.step-btn');
+            const phaseContents = document.querySelectorAll('.phase-content');
+
+            function showPhase(phaseNumber) {
+                phaseContents.forEach(content => content.classList.add('hidden'));
+                phaseBtns.forEach(btn => btn.classList.remove('active'));
+
+                const contentToShow = document.getElementById(`phase-${phaseNumber}-content`);
+                const btnToActivate = document.querySelector(`.step-btn[data-phase="${phaseNumber}"]`);
+
+                if (contentToShow) contentToShow.classList.remove('hidden');
+                if (btnToActivate) btnToActivate.classList.add('active');
+            }
+
+            phaseBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    showPhase(btn.dataset.phase);
+                });
+            });
+
+            showPhase(1);
+
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            function onScroll() {
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= sectionTop - 100) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.target === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', onScroll);
+            onScroll();
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.dataset.target;
+                    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
