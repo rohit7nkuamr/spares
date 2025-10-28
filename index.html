@@ -7,6 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* Base styles for professionalism */
+        .font-serif-safe { font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; }
+        .font-sans-safe { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }
+
         .chart-container {
             position: relative;
             width: 100%;
@@ -21,195 +25,225 @@
                 height: 350px;
             }
         }
+        /* Refined Navigation Links - Subtle Underline/Color Shift */
         .nav-link.active {
             font-weight: 600;
+            color: #0f172a; /* Dark Slate */
+            border-bottom-color: #0d9488; /* Teal Accent */
+            border-bottom-width: 3px;
+        }
+        .nav-link:hover {
             color: #0d9488;
-            border-bottom-color: #0d9488;
+        }
+        /* Primary Action Tabs (Solution Architecture) - Corporate Look */
+        .tab-btn {
+            border: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+            color: #374151;
+            transition: all 0.2s;
         }
         .tab-btn.active {
-            background-color: #0d9488;
+            background-color: #0d9488; /* Teal background for active */
             color: #ffffff;
-        }
-        .tech-tab-btn.active {
-            background-color: #2dd4bf;
-            color: #0f172a;
-            border-color: #0f172a;
-        }
-        .step-btn.active {
-            background-color: #0d9488;
-            color: #ffffff;
+            font-weight: 600;
             border-color: #0d9488;
         }
-        .step-btn.active ~ .step-line,
-        .step-btn.active ~ .step-btn {
-            background-color: #e5e7eb;
-            border-color: #e5e7eb;
-            color: #6b7280;
+        /* Secondary Tech Tabs - Formal Indicator */
+        .tech-tab-btn.active {
+            background-color: #e0f2f1; /* Light Teal */
+            color: #0f172a;
+            border-bottom: 2px solid #0d9488;
+            border-color: #0d9488;
         }
-        .step-line {
-            height: 2px;
-            width: 100%;
-            background-color: #e5e7eb;
+        /* Stepper - Clean and Professional */
+        .step-btn.active {
+            background-color: #1e293b; /* Dark Slate Blue for active */
+            color: #ffffff;
+            border-color: #1e293b;
         }
-        .step-btn.active:before {
-            content: '✓';
-            font-weight: bold;
-        }
+        /* Persona Cards - Clean interactive look */
         .persona-card {
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-left: 5px solid transparent;
         }
         .persona-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: none; /* Removed y-translate hover */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            border-left-color: #0d9488; /* Teal border on hover */
+        }
+        .persona-card.shadow-lg {
+             border-left-color: #0d9488;
+             background-color: #f0fdfa; /* Very light teal background when active */
+        }
+        .scenario-text {
+            border-left: 3px solid #0d9488;
+        }
+        /* Custom Styling for KPI Table - to make targets pop */
+        .kpi-table strong {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700;
+        }
+        /* NEW: Deeper background for executive feel */
+        .bg-page {
+            background-color: #f5f5f4; /* Slightly darker stone */
+        }
+        /* NEW: Stronger dividers */
+        .section-divider {
+            border-top: 1px solid #d4d4d4;
         }
     </style>
 </head>
-<body class="bg-stone-50 text-slate-900 font-sans antialiased">
-    <!-- Chosen Palette: Warm Neutral (Stone) with Teal and Dark Slate -->
+<body class="bg-page text-slate-900 font-sans-safe antialiased">
+    <!-- Chosen Palette: Warm Neutral (Stone) with Teal and Dark Slate (Executive) -->
     <!-- Application Structure Plan: The SPA uses a comprehensive top-navigation structure ('Overview', 'Solution', 'Personas', 'KPIs', 'Roadmap', 'Stack', 'Risks'). The 'Solution' section uses interactive tabs (PdM vs. SDF). The 'Personas' section uses clickable cards to link features to user roles. The 'Stack' section now uses secondary tabs to break down architecture into 'Tech Overview', 'Data Flow', and 'MLOps' for deep technical clarity. This structure prioritizes granular control over complex information, making the dashboard suitable for both high-level command review and technical team deep-dives. -->
     <!-- Visualization & Content Choices: 1. Expected Impact: Report Info -> 20-30% uptime increase. Goal -> Inform. Viz -> Bar Chart (Chart.js). 2. Solution Architecture: Report Info -> PdM/SDF models. Goal -> Organize/Clarify. Viz -> Tabs with 'Simple Function' column. 3. Personas: Report Info -> PRD User Stories. Goal -> Engage. Viz -> Clickable Cards (HTML/JS). 4. KPIs: Report Info -> PRD Success Metrics. Goal -> Inform/Measure. Viz -> HTML Table. 5. Roadmap: Report Info -> Phased Timeline. Goal -> Show Change. Viz -> Interactive Stepper (HTML/JS). 6. Tech Stack: Report Info -> Hybrid DB, MLOps, Security. Goal -> Detail/Organize. Viz -> Secondary Tab structure (HTML/JS) and tables. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
-    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm border-b border-stone-200">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0">
-                    <span class="text-xl font-bold text-teal-800">Project Sentinel</span>
-                </div>
-                <div class="hidden md:flex md:space-x-8">
-                    <a href="#overview" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="overview">Overview</a>
-                    <a href="#solution" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="solution">AI Solution</a>
-                    <a href="#personas" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="personas">User Personas</a>
-                    <a href="#kpis" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="kpis">Success Metrics</a>
-                    <a href="#roadmap" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="roadmap">Roadmap</a>
-                    <a href="#stack" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="stack">Tech Architecture</a>
-                    <a href="#risks" class="nav-link text-gray-600 hover:text-teal-700 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="risks">Risks & Mitigations</a>
-                </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-teal-700 focus:outline-none">
-                        <span class="text-2xl">☰</span>
-                    </button>
+    <header class="bg-white sticky top-0 z-50 shadow-lg border-b border-gray-200">
+        <div class="border-b border-gray-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl font-bold text-slate-900 tracking-wider">PROJECT SENTINEL</span>
+                        <span class="text-sm font-medium text-teal-600 ml-3 hidden sm:inline">INTELLIGENCE PLATFORM</span>
+                    </div>
+                    <div class="hidden md:flex md:space-x-8">
+                        <a href="#overview" class="nav-link text-gray-600 hover:text-slate-900 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="overview">Overview</a>
+                        <a href="#solution" class="nav-link text-gray-600 hover:text-slate-900 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="solution">AI Solution</a>
+                        <a href="#personas" class="nav-link text-gray-600 hover:text-slate-900 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="personas">User Roles</a>
+                        <a href="#kpis" class="nav-link text-gray-600 hover:text-slate-900 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="kpis">Success Metrics</a>
+                        <a href="#roadmap" class="nav-link text-gray-600 hover:text-slate-900 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="roadmap">Roadmap</a>
+                        <a href="#stack" class="nav-link text-gray-600 hover:text-slate-900 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="stack">Architecture</a>
+                        <a href="#risks" class="nav-link text-gray-600 hover:text-slate-900 px-1 py-2 border-b-2 border-transparent transition-colors duration-200" data-target="risks">Risks & Deps</a>
+                    </div>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-btn" class="text-gray-600 hover:text-slate-900 focus:outline-none">
+                            <span class="text-2xl">☰</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div id="mobile-menu" class="md:hidden hidden pb-4 space-y-2">
-                <a href="#overview" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="overview">Overview</a>
-                <a href="#solution" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="solution">AI Solution</a>
-                <a href="#personas" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="personas">User Personas</a>
-                <a href="#kpis" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="kpis">Success Metrics</a>
-                <a href="#roadmap" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="roadmap">Roadmap</a>
-                <a href="#stack" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="stack">Tech Architecture</a>
-                <a href="#risks" class="nav-link block text-gray-600 hover:text-teal-700 py-2" data-target="risks">Risks & Mitigations</a>
-            </div>
-        </nav>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden pb-4 space-y-2 bg-white px-4">
+            <a href="#overview" class="nav-link block text-gray-600 hover:text-slate-900 py-2" data-target="overview">Overview</a>
+            <a href="#solution" class="nav-link block text-gray-600 hover:text-slate-900 py-2" data-target="solution">AI Solution</a>
+            <a href="#personas" class="nav-link block text-gray-600 hover:text-slate-900 py-2" data-target="personas">User Roles</a>
+            <a href="#kpis" class="nav-link block text-gray-600 hover:text-slate-900 py-2" data-target="kpis">Success Metrics</a>
+            <a href="#roadmap" class="nav-link block text-gray-600 hover:text-slate-900 py-2" data-target="roadmap">Roadmap</a>
+            <a href="#stack" class="nav-link block text-gray-600 hover:text-slate-900 py-2" data-target="stack">Architecture</a>
+            <a href="#risks" class="nav-link block text-gray-600 hover:text-slate-900 py-2" data-target="risks">Risks & Deps</a>
+        </div>
     </header>
 
     <main>
         <section id="overview" class="py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h1 class="text-4xl font-extrabold text-slate-900 sm:text-5xl">Project Sentinel: Unified AI Intelligence Platform</h1>
-                    <p class="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">This project transforms the Indian Army’s maintenance and logistics to a proactive, data-driven framework. **Target Release Date: 13-01-2026.**</p>
+                    <p class="text-sm font-semibold text-teal-600 uppercase tracking-widest mb-1">PDS-05 | Integrated Intelligence Platform</p>
+                    <h1 class="text-4xl font-extrabold text-slate-900 sm:text-5xl">Transforming Maintenance from Reactive to Predictive</h1>
+                    <p class="mt-4 text-xl text-slate-700 max-w-3xl mx-auto font-light">Project Sentinel will shift the Army’s operational posture to a proactive, data-driven, and predictive maintenance and logistics framework. **Target Production Deployment: 13-01-2026.**</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                     <!-- Project Status Card -->
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
-                        <h2 class="text-2xl font-semibold text-teal-800 mb-3">Project Status & Experience</h2>
-                        <ul class="space-y-3 text-slate-700 list-disc list-inside">
+                    <div class="bg-white p-6 rounded-xl shadow-xl border border-stone-200">
+                        <span class="text-2xl text-teal-600 block mb-2">⭐</span>
+                        <h2 class="text-xl font-bold text-slate-900 mb-3 border-b pb-2 border-stone-100">Project Credentials</h2>
+                        <ul class="space-y-3 text-slate-700 list-disc list-inside text-sm">
                             <li><strong class="font-medium">Status:</strong> Partially developed. Ready for full integration.</li>
-                            <li><strong class="font-medium">Proven Pilot:</strong> Similar mobile/desktop app successfully delivered and tested at **474 EME wksp, Zirakpur**.</li>
-                            <li><strong class="font-medium">Indigenous Content:</strong> 100% Indigenous program/app development.</li>
+                            <li><strong class="font-medium">Proven Pilot:</strong> Successfully tested and delivered at **474 EME wksp, Zirakpur**.</li>
+                            <li><strong class="font-medium">Sovereignty:</strong> 100% Indigenous program/app development.</li>
                         </ul>
                     </div>
                     
                     <!-- Core Problem Card -->
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
-                        <h2 class="text-2xl font-semibold text-teal-800 mb-3">Critical Challenges Addressed</h2>
-                        <ul class="space-y-3 text-slate-700 list-disc list-inside">
-                            <li><strong class="font-medium">Unscheduled Downtime:</strong> Predicting failures before they compromise operations.</li>
-                            <li><strong class="font-medium">Inefficient Resource Allocation:</strong> Shifting from fixed schedules to condition-based maintenance.</li>
-                            <li><strong class="font-medium">Suboptimal Spares:</strong> Mitigating critical shortages and overstocking simultaneously.</li>
+                    <div class="bg-white p-6 rounded-xl shadow-xl border border-stone-200">
+                        <span class="text-2xl text-red-600 block mb-2">⚠</span>
+                        <h2 class="text-xl font-bold text-slate-900 mb-3 border-b pb-2 border-stone-100">Critical Challenges Addressed</h2>
+                        <ul class="space-y-3 text-slate-700 list-disc list-inside text-sm">
+                            <li><strong class="font-medium">Mission Impact:</strong> Eliminating unscheduled downtime during operations.</li>
+                            <li><strong class="font-medium">Efficiency:</strong> Allocating maintenance resources based on **actual equipment condition**.</li>
+                            <li><strong class="font-medium">Logistics:</strong> Resolving the dilemma of critical shortages vs. excessive overstocking.</li>
                         </ul>
                     </div>
                     
                     <!-- Strategic Importance Card -->
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
-                        <h2 class="text-2xl font-semibold text-teal-800 mb-3">Strategic Impact</h2>
-                        <p class="text-slate-700">Sentinel ensures maximum fleet readiness, enhances operational availability, and optimizes the entire logistical support chain. This aligns with the national strategic imperative of using advanced technology (Atma Nirbhar Bharat).</p>
+                    <div class="bg-white p-6 rounded-xl shadow-xl border border-stone-200">
+                        <span class="text-2xl text-slate-800 block mb-2">🛡️</span>
+                        <h2 class="text-xl font-bold text-slate-900 mb-3 border-b pb-2 border-stone-100">Strategic Alignment</h2>
+                        <p class="text-slate-700 text-sm">Sentinel ensures maximum fleet readiness and enhances operational availability. It directly supports the **"Atma Nirbhar Bharat"** initiative by establishing indigenous defense AI capability for a decisive operational edge.</p>
                     </div>
                 </div>
 
-                <h2 class="text-3xl font-bold text-center text-slate-900 mb-10">Expected Impact</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
-                        <h3 class="text-xl font-semibold text-center mb-4">Quantitative Gains</h3>
-                        <p class="text-slate-600 text-center mb-4">The primary goal is a 20-30% increase in equipment uptime and significant reductions in inventory costs. This chart shows the projected average improvement.</p>
-                        <div class="chart-container">
-                            <canvas id="impactChart"></canvas>
+                <h2 class="text-3xl font-bold text-center text-slate-900 mt-16 mb-10">Expected Quantitative Impact on Fleet Readiness</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 order-2 lg:order-1">
+                        <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200">
+                            <h3 class="text-lg font-semibold text-teal-700 mb-2">Operational Availability</h3>
+                            <p class="text-slate-700 text-sm">Guaranteed increase in the time assets are available for mission deployment.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200">
+                            <h3 class="text-lg font-semibold text-teal-700 mb-2">Cost Reduction</h3>
+                            <p class="text-slate-700 text-sm">Significant savings realized by minimizing dead stock and eliminating unnecessary scheduled servicing.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 col-span-1 md:col-span-2">
+                            <h3 class="text-lg font-semibold text-teal-700 mb-2">Decision Support</h3>
+                            <p class="text-slate-700 text-sm">Provides commanders and logistics officers with AI-driven equipment ratings and forecasts of maintenance interventions, enabling optimal resource planning.</p>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
-                            <h3 class="text-xl font-semibold text-teal-800 mb-2">Logistics & Cost</h3>
-                            <p class="text-slate-700">Significant reduction in inventory holding costs and logistical overhead by minimizing dead stock.</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
-                            <h3 class="text-xl font-semibold text-teal-800 mb-2">Decision Making</h3>
-                            <p class="text-slate-700">Provides AI-driven equipment ratings and forecasts of maintenance interventions during operations.</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200 col-span-1 md:col-span-2">
-                            <h3 class="text-xl font-semibold text-teal-800 mb-2">Self-Reliance</h3>
-                            <p class="text-slate-700">Establishes indigenous capability in integrated defense AI-ML systems, supporting "Atma Nirbhar Bharat".</p>
+                    <div class="bg-white p-8 rounded-xl shadow-2xl border border-stone-200 order-1 lg:order-2">
+                        <h3 class="text-xl font-bold text-center mb-4 text-slate-800">Projected Relative Uptime Improvement</h3>
+                        <p class="text-slate-600 text-center mb-4 text-sm">Targeting an average **$25\%$ relative gain** in operational uptime across the pilot fleet.</p>
+                        <div class="chart-container">
+                            <canvas id="impactChart"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        
+        <div class="section-divider"></div>
 
         <section id="solution" class="py-16 md:py-24 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Proposed AI Solution Architecture</h2>
-                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-6">Project Sentinel is built on two tightly integrated core modules. The "Simple Function" column clarifies the purpose of each technical component for non-AI experts. Click the tabs below to explore.</p>
+                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">AI Solution Architecture: Core Functional Modules</h2>
+                <p class="text-lg text-slate-700 text-center max-w-4xl mx-auto mb-10 font-light">The solution relies on two integrated modules. We've included a non-technical **"Simple Function"** column to explain the purpose of each component for operational clarity.</p>
                 
                 <div class="flex justify-center mb-6 space-x-2">
-                    <button id="pdm-tab-btn" class="tab-btn active px-6 py-3 font-medium rounded-md transition-colors duration-200">Predictive Maintenance (PdM)</button>
-                    <button id="sdf-tab-btn" class="tab-btn px-6 py-3 font-medium rounded-md text-slate-700 bg-stone-200 hover:bg-stone-300 transition-colors duration-200">Spares Demand Forecasting (SDF)</button>
+                    <button id="pdm-tab-btn" class="tab-btn active px-6 py-3 font-bold rounded-lg transition-colors duration-200">1. Predictive Maintenance (PdM)</button>
+                    <button id="sdf-tab-btn" class="tab-btn px-6 py-3 font-bold rounded-lg transition-colors duration-200">2. Spares Demand Forecasting (SDF)</button>
                 </div>
 
                 <div id="pdm-content" class="tab-content">
-                    <div class="overflow-x-auto rounded-lg shadow-md border border-stone-200">
+                    <div class="overflow-x-auto rounded-xl shadow-xl border border-stone-200">
                         <table class="w-full min-w-max text-left text-slate-700">
-                            <thead class="bg-stone-100 text-sm text-slate-800 uppercase">
+                            <thead class="bg-slate-800 text-sm text-white uppercase">
                                 <tr>
-                                    <th class="px-6 py-4 font-semibold">Component</th>
-                                    <th class="px-6 py-4 font-semibold">Core AI Technique</th>
-                                    <th class="px-6 py-4 font-semibold">Simple Function</th>
-                                    <th class="px-6 py-4 font-semibold">Input Data</th>
-                                    <th class="px-6 py-4 font-semibold">Output</th>
+                                    <th class="px-6 py-4 font-bold">Component</th>
+                                    <th class="px-6 py-4 font-bold">Core AI Technique</th>
+                                    <th class="px-6 py-4 font-bold">Simple Function (Operational Explanation)</th>
+                                    <th class="px-6 py-4 font-bold">Key Output</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-stone-200">
                                 <tr>
-                                    <td class="px-6 py-4 font-medium">Failure/KPI Correlation</td>
-                                    <td class="px-6 py-4">XGBoost / Random Forest</td>
-                                    <td class="px-6 py-4">**The 'Forensic Detective':** Predicts *what* specific failure (Engine, Transmission, etc.) is most likely based on historical patterns and usage conditions.</td>
-                                    <td class="px-6 py-4">Historical failures, Specified Life, Demonstrated Performance, System/Sub-system data (h).</td>
-                                    <td class="px-6 py-4">Probability of failure type (e.g., Engine) within next $N$ hours.</td>
+                                    <td class="px-6 py-4 font-medium">Failure/RUL Correlation</td>
+                                    <td class="px-6 py-4">XGBoost / Survival Analysis</td>
+                                    <td class="px-6 py-4">**The 'Life Estimator':** Correlates usage, vintage, and environment data to predict *what* specific failure is most likely and estimate the **Remaining Useful Life (RUL)**.</td>
+                                    <td class="px-6 py-4">RUL & Trigger for assembly check/replacement (Terrain Specific).</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 font-medium">Real-Time Anomaly Detection</td>
-                                    <td class="px-6 py-4">Isolation Forests / Autoencoders</td>
-                                    <td class="px-6 py-4">**The 'Watchdog':** Monitors live sensor data (e.g., vibration, temperature) and immediately flags anything unusual or unsafe, acting as a real-time early warning system.</td>
-                                    <td class="px-6 py-4">Real-time sensor data (vibration, temp, oil), Format for future sensors (d).</td>
-                                    <td class="px-6 py-4">Alert on deviation from 'healthy' baseline.</td>
+                                    <td class="px-6 py-4 font-medium">Breakdown Pattern Analysis</td>
+                                    <td class="px-6 py-4">Clustering / Association Rules</td>
+                                    <td class="px-6 py-4">**The 'Forensic Detective':** Identifies recurring patterns in breakdowns and the spares utilized to ensure the root causes and repair norms are accurately factored into the prediction models.</td>
+                                    <td class="px-6 py-4">Pattern identification in breakdowns and spare usage (f).</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 font-medium">Time-to-Failure & RUL</td>
-                                    <td class="px-6 py-4">Survival Analysis (Cox Model)</td>
-                                    <td class="px-6 py-4">**The 'Life Estimator':** Calculates how much operational life (Remaining Useful Life) is *left* in a part, adjusting the estimate based on how harsh the current terrain is.</td>
-                                    <td class="px-6 py-4">Usage metrics, Terrain of exploitation, Prevalent Weather (temp, humidity, wind) (e).</td>
-                                    <td class="px-6 py-4">RUL & Trigger for assembly check/replacement (Terrain Specific) (e).</td>
+                                    <td class="px-6 py-4 font-medium">Model for Terrain & Environmental Impact</td>
+                                    <td class="px-6 py-4">Geospatial / Stress Quantification</td>
+                                    <td class="px-6 py-4">**The 'Stress Adjuster':** Quantifies the wear caused by specific environments (desert, high-altitude, dense forest) and adjusts the failure risk accordingly.</td>
+                                    <td class="px-6 py-4">Operational Intensity Score (KPI) based on terrain/weather conditions (e).</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -217,31 +251,28 @@
                 </div>
 
                 <div id="sdf-content" class="tab-content hidden">
-                    <div class="overflow-x-auto rounded-lg shadow-md border border-stone-200">
+                    <div class="overflow-x-auto rounded-xl shadow-xl border border-stone-200">
                         <table class="w-full min-w-max text-left text-slate-700">
-                            <thead class="bg-stone-100 text-sm text-slate-800 uppercase">
+                            <thead class="bg-slate-800 text-sm text-white uppercase">
                                 <tr>
-                                    <th class="px-6 py-4 font-semibold">Component</th>
-                                    <th class="px-6 py-4 font-semibold">Core AI Technique</th>
-                                    <th class="px-6 py-4 font-semibold">Simple Function</th>
-                                    <th class="px-6 py-4 font-semibold">Input Data</th>
-                                    <th class="px-6 py-4 font-semibold">Output</th>
+                                    <th class="px-6 py-4 font-bold">Component</th>
+                                    <th class="px-6 py-4 font-bold">Core AI Technique</th>
+                                    <th class="px-6 py-4 font-bold">Simple Function (Operational Explanation)</th>
+                                    <th class="px-6 py-4 font-bold">Key Output</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-stone-200">
                                 <tr>
-                                    <td class="px-6 py-4 font-medium">Forecasting Model</td>
+                                    <td class="px-6 py-4 font-medium">Forecast Correlation Model</td>
                                     <td class="px-6 py-4">LSTM / Prophet (Time Series)</td>
-                                    <td class="px-6 py-4">**The 'Crystal Ball':** Takes the predicted failures from the PdM module and historical usage to accurately project *how many* of each spare part will be needed over the next few months.</td>
-                                    <td class="px-6 py-4">Predicted failures, Pattern in breakdowns & spares utilized (f), System/Sub-system data (h).</td>
-                                    <td class="px-6 py-4">Short/Long-term demand forecast for spares **with periodicity (g)**.</td>
+                                    <td class="px-6 py-4">**The 'Crystal Ball':** Uses predicted failures and historical usage to accurately project *how many* of each spare part will be needed.</td>
+                                    <td class="px-6 py-4">Short/Long-term demand forecast for spares **with periodicity**.</td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 font-medium">Inventory Optimization</td>
                                     <td class="px-6 py-4">Linear Programming (PuLP)</td>
-                                    <td class="px-6 py-4">**The 'Stock Level Manager':** Determines the exact quantity of spares (Reorder Points and safety stock) to keep at each base to guarantee high availability while minimizing holding costs.</td>
-                                    <td class="px-6 py-4">Demand forecast, cost, lead time, target service level (95%).</td>
-                                    <td class="px-6 py-4">Optimal Reorder Points (ROP) & safety stock for each repair echelon (g).</td>
+                                    <td class="px-6 py-4">**The 'Stock Level Manager':** Determines the exact quantity of spares (Reorder Points and safety stock) to keep at each base to guarantee high availability.</td>
+                                    <td class="px-6 py-4">Optimal Reorder Points (ROP) & safety stock for each repair echelon.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -250,47 +281,49 @@
             </div>
         </section>
         
+        <div class="section-divider"></div>
+
         <section id="personas" class="py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Role-Based Access & User Scenarios</h2>
-                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">The application is built around the specific information needs of three key operational personas. Click a card to view their core goals and a key scenario.</p>
+                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Role-Based Access & Actionable Scenarios</h2>
+                <p class="text-lg text-slate-700 text-center max-w-4xl mx-auto mb-10 font-light">Project Sentinel's design caters to a clear hierarchy of needs, ensuring each user receives only the data granularity required for their duties. Click a card to see the system in action.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Persona 1: Jawan/Technician -->
-                    <div id="persona-jawan" class="persona-card bg-white p-6 rounded-lg shadow-md border border-stone-200" data-persona="jawan">
-                        <h3 class="text-xl font-semibold text-teal-800 mb-2">Jawan (Technician) | EME Corps</h3>
-                        <p class="text-sm text-slate-600 mb-4">Focus: Hands-on maintenance, field operations (Mobile User).</p>
+                    <div id="persona-jawan" class="persona-card bg-white p-6 rounded-xl shadow-md border border-stone-200" data-persona="jawan">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Jawan (Technician)</h3>
+                        <p class="text-sm font-semibold text-teal-700 mb-4">Focus: Hands-on maintenance, field mobile user.</p>
                         <div class="text-slate-700">
-                            <strong class="text-sm block">Core Goal:</strong> Receive clear, specific work orders (e.g., "Check ALS Cooling System").
-                            <div id="jawan-scenario" class="mt-3 text-sm border-l-4 border-teal-500 pl-3 hidden">
+                            <strong class="text-sm block">Core Goal:</strong> Receive clear, specific work orders ("Just-in-Time" Intervention).
+                            <div id="jawan-scenario" class="mt-3 text-sm scenario-text pl-3 hidden">
                                 <p class="font-semibold">Scenario: Jawan Singh at 474 EME Wksp.</p>
-                                <p>Receives **mobile ALERT**: "ALS Vehicle BA-01-A0123 - High Probability of Cooling System Failure (85%)." The app shows specific data (temp, pressure) that triggered the prediction. He uses the mobile checklist to log the repair and part used (faulty hose).</p>
+                                <p>Receives **mobile ALERT**: "ALS Vehicle BA-01-A0123 - High Probability of Cooling System Failure (85%)." The app shows specific data that triggered the prediction. He uses the mobile checklist to log the repair and part used (faulty hose).</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Persona 2: JCO/Workshop Commander -->
-                    <div id="persona-jco" class="persona-card bg-white p-6 rounded-lg shadow-md border border-stone-200" data-persona="jco">
-                        <h3 class="text-xl font-semibold text-teal-800 mb-2">JCO (Workshop Commander)</h3>
-                        <p class="text-sm text-slate-600 mb-4">Focus: Task prioritization, resource management (Desktop/Web User).</p>
+                    <div id="persona-jco" class="persona-card bg-white p-6 rounded-xl shadow-md border border-stone-200" data-persona="jco">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">JCO (Workshop Commander)</h3>
+                        <p class="text-sm font-semibold text-teal-700 mb-4">Focus: Task prioritization, resource management (Desktop/Web).</p>
                         <div class="text-slate-700">
                             <strong class="text-sm block">Core Goal:</strong> Single pane of glass view to prioritize maintenance based on asset criticality.
-                            <div id="jco-scenario" class="mt-3 text-sm border-l-4 border-teal-500 pl-3 hidden">
+                            <div id="jco-scenario" class="mt-3 text-sm scenario-text pl-3 hidden">
                                 <p class="font-semibold">Scenario: JCO Verma on Desktop Dashboard.</p>
-                                <p>Sees the workshop's fleet health: 40 Green, 7 Amber, 3 Red (Critical). He checks the logistics module, confirms the required critical spare is in transit, and assigns his best technician to the task via the app.</p>
+                                <p>Sees the fleet health: 40 Green, 3 Red (Critical). He checks the logistics module, confirms the required spare is in transit, and assigns his best technician to the critical task via the application.</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Persona 3: Commissioned Officer/Logistics -->
-                    <div id="persona-logistics" class="persona-card bg-white p-6 rounded-lg shadow-md border border-stone-200" data-persona="logistics">
-                        <h3 class="text-xl font-semibold text-teal-800 mb-2">Commissioned Officer | Logistics & Ordnance</h3>
-                        <p class="text-sm text-slate-600 mb-4">Focus: Demand forecasting, supply chain optimization (Desktop/Web User).</p>
+                    <div id="persona-logistics" class="persona-card bg-white p-6 rounded-xl shadow-md border border-stone-200" data-persona="logistics">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Logistics & Ordnance Officer</h3>
+                        <p class="text-sm font-semibold text-teal-700 mb-4">Focus: Demand forecasting, supply chain optimization (Desktop/Web).</p>
                         <div class="text-slate-700">
                             <strong class="text-sm block">Core Goal:</strong> Accurately forecast demand for thousands of spare parts for the next quarter.
-                            <div id="logistics-scenario" class="mt-3 text-sm border-l-4 border-teal-500 pl-3 hidden">
+                            <div id="logistics-scenario" class="mt-3 text-sm scenario-text pl-3 hidden">
                                 <p class="font-semibold">Scenario: Major Gupta preparing Forecast.</p>
-                                <p>Accesses the SDF module. The dashboard provides a 6-month forecast for critical spares, augmented by predicted engine failures due to operational intensity. He uses this data to submit a highly accurate, risk-mitigated indent.</p>
+                                <p>Accesses the SDF module, which provides a 6-month forecast augmented by predicted engine failures due to operational intensity. He uses this data to submit a highly accurate, risk-mitigated indent.</p>
                             </div>
                         </div>
                     </div>
@@ -298,98 +331,102 @@
             </div>
         </section>
 
+        <div class="section-divider"></div>
+
         <section id="kpis" class="py-16 md:py-24 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Success Metrics & Quantifiable KPIs</h2>
-                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">Project Sentinel will be measured against these critical Key Performance Indicators (KPIs) 12 months post-rollout to ensure quantifiable operational value is delivered.</p>
+                <p class="text-lg text-slate-700 text-center max-w-4xl mx-auto mb-10 font-light">Success will be measured against these critical Key Performance Indicators (KPIs) 12 months post-rollout to ensure quantifiable operational value is delivered and the investment is justified.</p>
                 
-                <div class="max-w-6xl mx-auto overflow-x-auto rounded-lg shadow-md border border-stone-200">
-                    <table class="w-full min-w-max text-left text-slate-700">
-                        <thead class="bg-stone-100 text-sm text-slate-800 uppercase">
+                <div class="max-w-6xl mx-auto overflow-x-auto rounded-xl shadow-xl border border-stone-200">
+                    <table class="w-full min-w-max text-left text-slate-700 kpi-table">
+                        <thead class="bg-slate-800 text-sm text-white uppercase">
                             <tr>
-                                <th class="px-6 py-4 font-semibold">KPI</th>
-                                <th class="px-6 py-4 font-semibold">Description</th>
-                                <th class="px-6 py-4 font-semibold">Target (12 Months Post-Rollout)</th>
-                                <th class="px-6 py-4 font-semibold">Measurement Method</th>
+                                <th class="px-6 py-4 font-bold">Metric ID</th>
+                                <th class="px-6 py-4 font-bold">KPI Description</th>
+                                <th class="px-6 py-4 font-bold text-center">Target (12 Months Post-Rollout)</th>
+                                <th class="px-6 py-4 font-bold">Measurement Method</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-stone-200">
-                            <tr>
+                            <tr class="hover:bg-teal-50">
                                 <td class="px-6 py-4 font-medium">KPI-01</td>
                                 <td class="px-6 py-4">Reduction in Unscheduled Maintenance Events</td>
-                                <td class="px-6 py-4 text-teal-700 font-semibold">$25\%$ Reduction</td>
-                                <td class="px-6 py-4">Analysis of maintenance logs categorized as "Unscheduled" vs. "Scheduled" within Sentinel.</td>
+                                <td class="px-6 py-4 font-bold text-lg text-teal-700 text-center">$25\%$ Reduction</td>
+                                <td class="px-6 py-4 text-sm">Analysis of logs categorized as "Unscheduled" vs. "Scheduled" within Sentinel.</td>
                             </tr>
-                            <tr>
+                            <tr class="hover:bg-teal-50">
                                 <td class="px-6 py-4 font-medium">KPI-02</td>
                                 <td class="px-6 py-4">Increase in Mean Time Between Failures (MTBF)</td>
-                                <td class="px-6 py-4 text-teal-700 font-semibold">$15\%$ Increase</td>
-                                <td class="px-6 py-4">Calculation of MTBF based on operational hours and failure events logged in the Sentinel database.</td>
+                                <td class="px-6 py-4 font-bold text-lg text-teal-700 text-center">$15\%$ Increase</td>
+                                <td class="px-6 py-4 text-sm">Calculation of MTBF based on operational hours and failure events logged in the Sentinel database.</td>
                             </tr>
-                            <tr>
+                            <tr class="hover:bg-teal-50">
                                 <td class="px-6 py-4 font-medium">KPI-03</td>
                                 <td class="px-6 py-4">Reduction in Equipment Downtime</td>
-                                <td class="px-6 py-4 text-teal-700 font-semibold">$20\%$ Reduction</td>
-                                <td class="px-6 py-4">Analysis of timestamps in logs to calculate the average duration of repair cycles (report to return-to-service).</td>
+                                <td class="px-6 py-4 font-bold text-lg text-teal-700 text-center">$20\%$ Reduction</td>
+                                <td class="px-6 py-4 text-sm">Analysis of repair cycle duration (report to return-to-service).</td>
                             </tr>
-                            <tr>
+                            <tr class="hover:bg-teal-50">
                                 <td class="px-6 py-4 font-medium">KPI-04</td>
                                 <td class="px-6 py-4">Improvement in Spare Part Forecast Accuracy</td>
-                                <td class="px-6 py-4 text-teal-700 font-semibold">$85\%$ Accuracy</td>
-                                <td class="px-6 py-4">Quarterly comparison of Sentinel's forecasted demand against actual consumption data.</td>
+                                <td class="px-6 py-4 font-bold text-lg text-teal-700 text-center">$85\%$ Accuracy</td>
+                                <td class="px-6 py-4 text-sm">Quarterly comparison of Sentinel's forecasted demand against actual consumption data.</td>
                             </tr>
-                            <tr>
+                            <tr class="hover:bg-teal-50">
                                 <td class="px-6 py-4 font-medium">KPI-05</td>
                                 <td class="px-6 py-4">Reduction in "Not Materialized" Spares Incidents</td>
-                                <td class="px-6 py-4 text-teal-700 font-semibold">$30\%$ Reduction</td>
-                                <td class="px-6 py-4">Tracking fulfillment status of all critical spares requests within the Sentinel logistics module.</td>
-                            </tr>
+                                <td class="px-6 py-4 font-bold text-lg text-teal-700 text-center">$30\%$ Reduction</td>
+                                <td class="px-6 py-4 text-sm">Tracking fulfillment status of all critical spares requests within the Sentinel logistics module.</td>
+                            </div>
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
+        <div class="section-divider"></div>
+
         <section id="roadmap" class="py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Implementation Roadmap (6-Month Prototype Cycle)</h2>
-                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">The project follows a 6-month phased approach to deliver a tested and validated pilot system, starting with the pilot vehicle type, the **Ashok Leyland Stallion (ALS)**.</p>
+                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Implementation Roadmap: 6-Month Prototype Cycle</h2>
+                <p class="text-lg text-slate-700 text-center max-w-4xl mx-auto mb-10 font-light">The project follows a rigorous phased approach to deliver a tested and validated pilot system, focusing on the **Ashok Leyland Stallion (ALS)** vehicle type.</p>
 
                 <div class="w-full max-w-4xl mx-auto">
                     <div class="flex items-center justify-between mb-8">
-                        <button class="step-btn flex-1 text-center px-4 py-2 rounded-md border-2 border-stone-300 bg-stone-100 text-slate-600 font-medium" data-phase="1">Phase 1: Foundation (4 Weeks)</button>
+                        <button class="step-btn flex-1 text-center px-4 py-2 rounded-lg border-2 border-slate-300 bg-stone-100 text-slate-600 font-bold" data-phase="1">Phase 1: Foundation (4 Weeks)</button>
                         <div class="step-line flex-grow mx-2"></div>
-                        <button class="step-btn flex-1 text-center px-4 py-2 rounded-md border-2 border-stone-300 bg-stone-100 text-slate-600 font-medium" data-phase="2">Phase 2: Core Dev (12 Weeks)</button>
+                        <button class="step-btn flex-1 text-center px-4 py-2 rounded-lg border-2 border-slate-300 bg-stone-100 text-slate-600 font-bold" data-phase="2">Phase 2: Core Dev (12 Weeks)</button>
                         <div class="step-line flex-grow mx-2"></div>
-                        <button class="step-btn flex-1 text-center px-4 py-2 rounded-md border-2 border-stone-300 bg-stone-100 text-slate-600 font-medium" data-phase="3">Phase 3: Test & Handover (8 Weeks)</button>
+                        <button class="step-btn flex-1 text-center px-4 py-2 rounded-lg border-2 border-slate-300 bg-stone-100 text-slate-600 font-bold" data-phase="3">Phase 3: Test & Handover (8 Weeks)</button>
                     </div>
 
                     <div class="relative">
-                        <div id="phase-1-content" class="phase-content bg-white p-6 rounded-lg shadow-lg border border-stone-200">
-                            <h3 class="text-2xl font-semibold text-teal-800 mb-3">Phase 1: Foundation & Scoping (Weeks 1-4)</h3>
-                            <ul class="space-y-2 text-slate-700 list-disc list-inside">
-                                <li><strong>Kickoff:</strong> Finalize PRD/Tech Spec and establish CI/CD Pipeline.</li>
-                                <li><strong>Data & Schema:</strong> Implement Core Database Schema (PostgreSQL/Time-Series DB).</li>
-                                <li><strong>Key Milestone:</strong> Joint Data Scoping Workshop with Army SME (Week 2).</li>
-                                <li><strong>Deliverable:</strong> Functional Development & Staging Environments.</li>
+                        <div id="phase-1-content" class="phase-content bg-white p-8 rounded-xl shadow-xl border border-stone-200">
+                            <h3 class="text-2xl font-bold text-teal-800 mb-3">Phase 1: Foundation & Scoping (Weeks 1-4)</h3>
+                            <ul class="space-y-3 text-slate-700 list-disc list-inside">
+                                <li>**Milestone:** Project Kickoff, Finalize PRD/Tech Spec, Establish CI/CD Pipeline.</li>
+                                <li>**Data Foundation:** Implement Core Database Schema (PostgreSQL/Time-Series DB).</li>
+                                <li>**Critical Path:** Joint Data Scoping Workshop with Army SME (Week 2).</li>
+                                <li>**Deliverable:** Functional Development & Staging Environments.</li>
                             </ul>
                         </div>
-                        <div id="phase-2-content" class="phase-content hidden bg-white p-6 rounded-lg shadow-lg border border-stone-200">
-                            <h3 class="text-2xl font-semibold text-teal-800 mb-3">Phase 2: Core Feature Development (Weeks 5-16)</h3>
-                            <ul class="space-y-2 text-slate-700 list-disc list-inside">
-                                <li><strong>Backend:</strong> Implement User Authentication (RBAC) and Equipment/Log APIs.</li>
-                                <li><strong>Frontend:</strong> Build Fleet Health Dashboard, Asset Views, Alerting UI, and Spares Forecast Dashboard.</li>
-                                <li><strong>AI/ML:</strong> **Develop, Train & Validate v1.0 AI Models for ALS** (Failure Prediction & Spares Demand).</li>
-                                <li><strong>Key Milestone:</strong> Internal Alpha Release – Full integration of all services and v1.0 AI models (Week 16).</li>
+                        <div id="phase-2-content" class="phase-content hidden bg-white p-8 rounded-xl shadow-xl border border-stone-200">
+                            <h3 class="text-2xl font-bold text-teal-800 mb-3">Phase 2: Core Feature Development (Weeks 5-16)</h3>
+                            <ul class="space-y-3 text-slate-700 list-disc list-inside">
+                                <li>**Backend:** Implement User Authentication (RBAC), Equipment/Log APIs, Prediction Service API.</li>
+                                <li>**Frontend:** Build all dashboards: Fleet Health, Asset Views, Alerting UI, and Spares Forecast.</li>
+                                <li>**AI/ML:** **Develop, Train & Validate v1.0 AI Models for ALS** (Failure Prediction & Spares Demand).</li>
+                                <li>**Milestone:** Internal Alpha Release (Week 16).</li>
                             </ul>
                         </div>
-                        <div id="phase-3-content" class="phase-content hidden bg-white p-6 rounded-lg shadow-lg border border-stone-200">
-                            <h3 class="text-2xl font-semibold text-teal-800 mb-3">Phase 3: Integration, Testing & Handover (Weeks 17-24)</h3>
-                            <ul class="space-y-2 text-slate-700 list-disc list-inside">
-                                <li><strong>Testing:</strong> Conduct comprehensive System Integration (SIT) and Security/Load Testing.</li>
-                                <li><strong>UAT & Training:</strong> **User Acceptance Testing (UAT)** with designated personnel from **474 EME Wksp** (Weeks 17-20).</li>
-                                <li><strong>Required Assistance:</strong> Ord/EME SME required for feature engineering and process validation (4+ hours/week).</li>
-                                <li><strong>Key Milestone:</strong> Production Deployment, Formal User Training, and Documentation Handover (Week 24).</li>
+                        <div id="phase-3-content" class="phase-content hidden bg-white p-8 rounded-xl shadow-xl border border-stone-200">
+                            <h3 class="text-2xl font-bold text-teal-800 mb-3">Phase 3: Integration, Testing & Handover (Weeks 17-24)</h3>
+                            <ul class="space-y-3 text-slate-700 list-disc list-inside">
+                                <li>**Testing:** Conduct comprehensive System Integration (SIT) and Security/Load Testing.</li>
+                                <li>**Validation:** **User Acceptance Testing (UAT)** with **474 EME Wksp** personnel (Weeks 17-20).</li>
+                                <li>**Handover:** Production Deployment, Formal User Training, and Documentation Handover (Week 24).</li>
+                                <li>**Dependency:** Requires Ord/EME SME for final process validation.</li>
                             </ul>
                         </div>
                     </div>
@@ -397,37 +434,136 @@
             </div>
         </section>
         
-        <section id="risks" class="py-16 md:py-24 bg-white">
+        <div class="section-divider"></div>
+
+        <section id="stack" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Detailed Technical Architecture</h2>
+                <p class="text-lg text-slate-700 text-center max-w-4xl mx-auto mb-10 font-light">The architecture is designed for scalability and defense-grade security, using a modular microservices approach built on robust, proven frameworks.</p>
+                
+                <div class="flex justify-center mb-6 space-x-1 sm:space-x-3">
+                    <button id="tech-tab-1-btn" class="tech-tab-btn active px-3 sm:px-4 py-2 font-semibold rounded-t-lg transition-colors duration-200 text-slate-900 bg-white border-b-2 border-transparent">Tech Overview</button>
+                    <button id="tech-tab-2-btn" class="tech-tab-btn px-3 sm:px-4 py-2 font-semibold rounded-t-lg transition-colors duration-200 text-slate-900 bg-white border-b-2 border-transparent">Data & Hybrid DB Strategy</button>
+                    <button id="tech-tab-3-btn" class="tech-tab-btn px-3 sm:px-4 py-2 font-semibold rounded-t-lg transition-colors duration-200 text-slate-900 bg-white border-b-2 border-transparent">MLOps & Deployment</button>
+                </div>
+                
+                <div class="border-t border-gray-300 rounded-b-xl shadow-xl">
+                    <div id="tech-tab-1-content" class="tech-tab-content bg-white p-6 sm:p-8 rounded-b-xl">
+                        <div class="max-w-6xl mx-auto overflow-x-auto">
+                            <table class="w-full min-w-max text-left text-slate-700">
+                                <thead class="bg-gray-50 text-xs text-slate-800 uppercase border-b border-stone-200">
+                                    <tr>
+                                        <th class="px-6 py-3 font-bold">Category</th>
+                                        <th class="px-6 py-3 font-bold">Suggested Technology</th>
+                                        <th class="px-6 py-3 font-bold">Technical Rationale & Key Feature</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-stone-100">
+                                    <tr>
+                                        <td class="px-6 py-4 font-semibold">Frontend Clients</td>
+                                        <td class="px-6 py-4 font-medium">Web (React/Angular) + Mobile (React Native/Flutter)</td>
+                                        <td class="px-6 py-4 text-sm">Ensures a rich desktop dashboard for commanders and a practical, robust mobile app for field technicians, all from a unified codebase.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-semibold">Backend/API</td>
+                                        <td class="px-6 py-4 font-medium">Python (FastAPI/Django) + Docker/Kubernetes</td>
+                                        <td class="px-6 py-4 text-sm">Microservices architecture for scalability; Python's ecosystem supports seamless integration with ML models.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-semibold">AI/ML Frameworks</td>
+                                        <td class="px-6 py-4 font-medium">TensorFlow / PyTorch</td>
+                                        <td class="px-6 py-4 text-sm">Used for developing and training the complex predictive (RUL) and forecasting (LSTM) models.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-semibold">Security & Access</td>
+                                        <td class="px-6 py-4 font-medium">TLS 1.2+ & Role-Based Access Control (RBAC)</td>
+                                        <td class="px-6 py-4 text-sm">Defense-grade encryption in transit and strict access tailored to user roles (Jawan vs. Logistics Officer).</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div id="tech-tab-2-content" class="tech-tab-content hidden bg-white p-6 sm:p-8 rounded-b-xl">
+                        <h3 class="text-2xl font-bold text-teal-800 mb-3">Hybrid Database & Data Ingestion Strategy</h3>
+                        <p class="text-slate-700 mb-6 text-sm">The **Hybrid Database Strategy** is a critical design choice, separating low-volume transactional data from high-volume sensor readings to ensure long-term performance and scalability.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900 mb-2">Data Types & Storage</h4>
+                                <ul class="list-disc list-inside space-y-2 text-slate-700 text-sm pl-4">
+                                    <li>**Relational Data (PostgreSQL):** For structured, transactional data like Equipment Master Registry and Maintenance Logs.</li>
+                                    <li>**Time-Series Data (InfluxDB/TimescaleDB):** For high-volume, high-velocity time-stamped data from **Future IoT Sensors** (temp, vibration).</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900 mb-2">Data Ingestion Methods</h4>
+                                <ul class="list-disc list-inside space-y-2 text-slate-700 text-sm pl-4">
+                                    <li>**Historical Data:** Bulk uploads via secure web interface (CSV/Excel).</li>
+                                    <li>**Manual Data:** Technicians log maintenance/spares usage directly via the Mobile App.</li>
+                                    <li>**Future IoT Data:** Secure, scalable **MQTT Broker** and REST API endpoints for real-time sensor streams.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tech-tab-3-content" class="tech-tab-content hidden bg-white p-6 sm:p-8 rounded-b-xl">
+                        <h3 class="text-2xl font-bold text-teal-800 mb-3">MLOps (Model Lifecycle Management)</h3>
+                        <p class="text-slate-700 mb-6 text-sm">MLOps is a foundational, non-negotiable component for managing the **dozens of independent models** required for diverse vehicle fleets (e.g., ALS Engine vs. T-90 Transmission).</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900 mb-2">Core MLOps Components (MLflow)</h4>
+                                <ul class="list-disc list-inside space-y-2 text-slate-700 text-sm pl-4">
+                                    <li>**Experiment Tracking:** Logs all training runs, parameters, and metrics.</li>
+                                    <li>**Model Registry:** Central repository to store, version, and stage trained models.</li>
+                                    <li>**Automated Pipelines (CI/CD):** Triggers model retraining when new data is available or performance degrades (Model Drift).</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900 mb-2">Model Deployment & Monitoring</h4>
+                                <ul class="list-disc list-inside space-y-2 text-slate-700 text-sm pl-4">
+                                    <li>**Serving:** Models are containerized and deployed as microservices with a REST API endpoint for inference.</li>
+                                    <li>**Monitoring:** Dedicated dashboard tracks real-world model performance (Accuracy, Precision, Recall) to ensure models remain relevant.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="section-divider"></div>
+
+        <section id="risks" class="py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Critical Dependencies and Risk Mitigation</h2>
-                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-10">Success hinges on collaboration. These are the key dependencies, risks, and the agreed-upon strategies to ensure project delivery is not compromised.</p>
+                <p class="text-lg text-slate-700 text-center max-w-4xl mx-auto mb-10 font-light">The project's success is tied to organizational collaboration and data quality. We have defined three critical dependencies and their mitigation strategies.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-red-50 p-6 rounded-lg shadow-md border border-red-200">
-                        <h3 class="text-xl font-semibold text-red-700 mb-2">Dependency 1: Data Quality & Access</h3>
-                        <p class="text-slate-700 mb-3">The AI model accuracy depends entirely on the completeness and consistency of historical maintenance logs.</p>
-                        <strong class="text-sm font-medium text-red-600 block mb-1">Mitigation Strategy:</strong>
-                        <ul class="text-sm text-slate-600 list-disc list-inside space-y-1">
+                    <div class="bg-white p-6 rounded-xl shadow-xl border border-red-200 border-l-4 border-l-red-600">
+                        <h3 class="text-xl font-bold text-red-700 mb-2">Dependency 1: Data Quality & Access</h3>
+                        <p class="text-slate-700 mb-3 text-sm">The AI model accuracy depends entirely on the completeness and consistency of historical maintenance logs.</p>
+                        <strong class="text-sm font-bold text-red-600 block mb-1">Mitigation Strategy:</strong>
+                        <ul class="text-sm text-slate-600 list-disc list-inside space-y-1 pl-4">
                             <li>Mandatory joint data-scoping workshop (Week 2).</li>
                             <li>Co-create explicit Data Requirements Document (DRD).</li>
                             <li>Build automated data validation scripts into the ingestion pipeline.</li>
                         </ul>
                     </div>
-                    <div class="bg-red-50 p-6 rounded-lg shadow-md border border-red-200">
-                        <h3 class="text-xl font-semibold text-red-700 mb-2">Dependency 2: Consistent Army SME Access</h3>
-                        <p class="text-slate-700 mb-3">Expert EME/Ordnance guidance is critical for feature engineering and practical validation of maintenance triggers.</p>
-                        <strong class="text-sm font-medium text-red-600 block mb-1">Mitigation Strategy:</strong>
-                        <ul class="text-sm text-slate-600 list-disc list-inside space-y-1">
+                    <div class="bg-white p-6 rounded-xl shadow-xl border border-red-200 border-l-4 border-l-red-600">
+                        <h3 class="text-xl font-bold text-red-700 mb-2">Dependency 2: Consistent Army SME Access</h3>
+                        <p class="text-slate-700 mb-3 text-sm">Expert EME/Ordnance guidance is critical for feature engineering and practical validation of maintenance triggers.</p>
+                        <strong class="text-sm font-bold text-red-600 block mb-1">Mitigation Strategy:</strong>
+                        <ul class="text-sm text-slate-600 list-disc list-inside space-y-1 pl-4">
                             <li>Formally assign a Primary and Secondary SME.</li>
                             <li>Establish a fixed schedule of interactions (min. 4 hours/week).</li>
-                            <li>Utilize asynchronous tools to respect SME operational duties.</li>
+                            <li>Utilize collaborative tools for asynchronous feedback.</li>
                         </ul>
                     </div>
-                    <div class="bg-red-50 p-6 rounded-lg shadow-md border border-red-200">
-                        <h3 class="text-xl font-semibold text-red-700 mb-2">Dependency 3: UAT/Pilot Unit Availability</h3>
-                        <p class="text-slate-700 mb-3">Availability of personnel and equipment at 474 EME Wksp is critical for the UAT and training window (Weeks 17-20).</p>
-                        <strong class="text-sm font-medium text-red-600 block mb-1">Mitigation Strategy:</strong>
-                        <ul class="text-sm text-slate-600 list-disc list-inside space-y-1">
+                    <div class="bg-white p-6 rounded-xl shadow-xl border border-red-200 border-l-4 border-l-red-600">
+                        <h3 class="text-xl font-bold text-red-700 mb-2">Dependency 3: UAT/Pilot Unit Availability</h3>
+                        <p class="text-slate-700 mb-3 text-sm">Availability of personnel and equipment at 474 EME Wksp is critical for the UAT and training window (Weeks 17-20).</p>
+                        <strong class="text-sm font-bold text-red-600 block mb-1">Mitigation Strategy:</strong>
+                        <ul class="text-sm text-slate-600 list-disc list-inside space-y-1 pl-4">
                             <li>Schedule UAT/training periods 2+ months in advance with Command.</li>
                             <li>Develop detailed UAT plan for maximum time efficiency.</li>
                             <li>Build a one-week buffer into the project plan.</li>
@@ -436,115 +572,11 @@
                 </div>
             </div>
         </section>
-
-        <section id="stack" class="py-16 md:py-24 bg-stone-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-bold text-center text-slate-900 mb-4">Core Technical Architecture</h2>
-                <p class="text-lg text-slate-600 text-center max-w-3xl mx-auto mb-6">The system is built on a modular, secure microservices architecture. Explore the detailed components below.</p>
-                
-                <div class="flex justify-center mb-6 space-x-2">
-                    <button id="tech-tab-1-btn" class="tech-tab-btn active px-4 py-2 font-medium rounded-md transition-colors duration-200 text-slate-700 bg-stone-200 hover:bg-stone-300">Tech Overview</button>
-                    <button id="tech-tab-2-btn" class="tech-tab-btn px-4 py-2 font-medium rounded-md transition-colors duration-200 text-slate-700 bg-stone-200 hover:bg-stone-300">Data & DB Strategy</button>
-                    <button id="tech-tab-3-btn" class="tech-tab-btn px-4 py-2 font-medium rounded-md transition-colors duration-200 text-slate-700 bg-stone-200 hover:bg-stone-300">MLOps & Deployment</button>
-                </div>
-                
-                <div id="tech-tab-1-content" class="tech-tab-content">
-                    <div class="max-w-6xl mx-auto overflow-x-auto rounded-lg shadow-md border border-stone-200">
-                        <table class="w-full min-w-max text-left text-slate-700">
-                            <thead class="bg-stone-100 text-sm text-slate-800 uppercase">
-                                <tr>
-                                    <th class="px-6 py-4 font-semibold">Category</th>
-                                    <th class="px-6 py-4 font-semibold">Suggested Technology</th>
-                                    <th class="px-6 py-4 font-semibold">Technical Rationale & Key Feature</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-stone-200">
-                                <tr>
-                                    <td class="px-6 py-4 font-medium"><span class="mr-2">💻</span> Frontend Clients</td>
-                                    <td class="px-6 py-4 font-semibold">Web (React/Angular) + Mobile (React Native/Flutter)</td>
-                                    <td class="px-6 py-4">Ensures a rich desktop dashboard for commanders and a practical, robust mobile app for field technicians, all from a unified codebase.</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 font-medium"><span class="mr-2">🌐</span> Backend/API</td>
-                                    <td class="px-6 py-4 font-semibold">Python (FastAPI/Django) + Docker/Kubernetes</td>
-                                    <td class="px-6 py-4">Python's data science ecosystem supports models; containerization ensures consistency and automated scaling (Microservices Architecture).</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 font-medium"><span class="mr-2">🧠</span> AI/ML Frameworks</td>
-                                    <td class="px-6 py-4 font-semibold">TensorFlow / PyTorch</td>
-                                    <td class="px-6 py-4">Used for developing and training the complex predictive (RUL) and forecasting (LSTM) models.</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 font-medium"><span class="mr-2">📡</span> Edge Computing</td>
-                                    <td class="px-6 py-4 font-semibold">ONNX / TensorFlow Lite</td>
-                                    <td class="px-6 py-4">Allows smaller prediction models to run directly on ruggedized field sensors for real-time anomaly detection.</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 font-medium"><span class="mr-2">🔐</span> Security & Access</td>
-                                    <td class="px-6 py-4 font-semibold">TLS 1.2+ & Role-Based Access Control (RBAC)</td>
-                                    <td class="px-6 py-4">End-to-end data encryption and strict access tailored to user roles (Jawan vs. Logistics Officer).</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <div id="tech-tab-2-content" class="tech-tab-content hidden">
-                    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md border border-stone-200">
-                        <h3 class="text-2xl font-semibold text-teal-800 mb-3">Hybrid Database & Data Ingestion</h3>
-                        <p class="text-slate-700 mb-4">The **Hybrid Database Strategy** is a critical design choice, separating low-volume transactional data from high-volume sensor readings to ensure long-term performance and scalability.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <h4 class="font-semibold text-lg text-teal-700">1. Data Types & Storage</h4>
-                                <ul class="list-disc list-inside space-y-2 text-slate-700 mt-2">
-                                    <li>**Relational Data (PostgreSQL):** Used for structured, transactional data like **Equipment Master Registry, User Accounts, and Maintenance Logs**.</li>
-                                    <li>**Time-Series Data (InfluxDB/TimescaleDB):** Essential for high-volume, high-velocity time-stamped data from **Future IoT Sensors** (temp, vibration, pressure).</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-lg text-teal-700">2. Ingestion Methods</h4>
-                                <ul class="list-disc list-inside space-y-2 text-slate-700 mt-2">
-                                    <li>**Historical Data:** Bulk uploads via secure web interface (CSV/Excel).</li>
-                                    <li>**Manual Data:** Technicians log maintenance/spares usage directly via the Mobile App.</li>
-                                    <li>**Future IoT Data:** Secure, scalable **MQTT Broker** and REST API endpoints for real-time sensor streams.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="tech-tab-3-content" class="tech-tab-content hidden">
-                    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md border border-stone-200">
-                        <h3 class="text-2xl font-semibold text-teal-800 mb-3">MLOps (Model Lifecycle Management)</h3>
-                        <p class="text-slate-700 mb-4">MLOps is a foundational, non-negotiable component for managing the **dozens of independent models** required for diverse vehicle fleets (e.g., ALS Engine vs. T-90 Transmission).</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <h4 class="font-semibold text-lg text-teal-700">1. Core MLOps Components (MLflow)</h4>
-                                <ul class="list-disc list-inside space-y-2 text-slate-700 mt-2">
-                                    <li>**Experiment Tracking:** Log all training runs, parameters, and metrics.</li>
-                                    <li>**Model Registry:** Central repository to store, version, and stage trained models (Staging to Production).</li>
-                                    <li>**Automated Pipelines (CI/CD):** Triggers model retraining when new data is available or performance degrades (Model Drift).</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-lg text-teal-700">2. Model Deployment & Monitoring</h4>
-                                <ul class="list-disc list-inside space-y-2 text-slate-700 mt-2">
-                                    <li>**Serving:** Models are containerized and deployed as microservices with a REST API endpoint for inference.</li>
-                                    <li>**Monitoring:** Dedicated dashboard tracks real-world model performance (Accuracy, Precision, Recall) to ensure models remain relevant.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </section>
     </main>
 
     <footer class="bg-slate-800 text-slate-300 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p>&copy; 2025 Project Sentinel. Integrated AI Platform by Acornpensy Defense Pvt Ltd.</p>
-            <p class="text-sm text-slate-400 mt-1">PDS-05, Indian Army VII Edition Compendium 2025 | Target Release: 13-01-2026</p>
+            <p class="text-sm text-slate-400">PDS-05, Integrated Intelligence Platform | Target Release: 13-01-2026</p>
         </div>
     </footer>
 
@@ -559,11 +591,11 @@
                         label: 'Relative Equipment Uptime',
                         data: [100, 125],
                         backgroundColor: [
-                            'rgba(239, 68, 68, 0.6)',
-                            'rgba(13, 148, 136, 0.6)'
+                            'rgba(148, 163, 184, 0.6)', /* Slate 400 */
+                            'rgba(13, 148, 136, 0.9)' /* Dark Teal */
                         ],
                         borderColor: [
-                            'rgba(239, 68, 68, 1)',
+                            'rgba(148, 163, 184, 1)',
                             'rgba(13, 148, 136, 1)'
                         ],
                         borderWidth: 1
@@ -617,12 +649,14 @@
                     sdfContent.classList.add('hidden');
                     pdmTabBtn.classList.add('active');
                     sdfTabBtn.classList.remove('active');
+                    sdfTabBtn.classList.remove('bg-teal-600', 'text-white');
                     sdfTabBtn.classList.add('bg-stone-200', 'text-slate-700', 'hover:bg-stone-300');
                 } else {
                     sdfContent.classList.remove('hidden');
                     pdmContent.classList.add('hidden');
                     sdfTabBtn.classList.add('active');
                     pdmTabBtn.classList.remove('active');
+                    pdmTabBtn.classList.remove('bg-teal-600', 'text-white');
                     pdmTabBtn.classList.add('bg-stone-200', 'text-slate-700', 'hover:bg-stone-300');
                 }
             }
@@ -636,10 +670,14 @@
 
             function showTechTab(tabId) {
                 techTabContents.forEach(content => content.classList.add('hidden'));
-                techTabBtns.forEach(btn => btn.classList.remove('active'));
+                techTabBtns.forEach(btn => btn.classList.remove('active', 'bg-teal-500', 'border-b-2', 'border-b-teal-700'));
+                techTabBtns.forEach(btn => btn.classList.add('bg-white'));
+
 
                 document.getElementById(tabId + '-content').classList.remove('hidden');
-                document.getElementById(tabId + '-btn').classList.add('active');
+                document.getElementById(tabId + '-btn').classList.add('active', 'border-b-4', 'border-b-teal-600', 'bg-gray-50');
+                document.getElementById(tabId + '-btn').classList.remove('bg-white');
+
             }
 
             techTabBtns.forEach(btn => {
@@ -687,12 +725,14 @@
                     const persona = card.dataset.persona;
                     // Hide all scenarios
                     Object.values(scenarioElements).forEach(el => el.classList.add('hidden'));
+                    personaCards.forEach(c => c.classList.remove('shadow-lg', 'bg-f0fdfa')); // Reset previous active style
+                    
                     // Show the selected scenario
                     scenarioElements[persona].classList.remove('hidden');
                     
-                    // Optional: Highlight the clicked card
-                    personaCards.forEach(c => c.classList.remove('shadow-lg', 'bg-stone-100'));
-                    card.classList.add('shadow-lg', 'bg-stone-100');
+                    // Highlight the clicked card
+                    card.classList.add('shadow-lg', 'bg-f0fdfa'); // Apply new active style
+                    
                 });
             });
 
